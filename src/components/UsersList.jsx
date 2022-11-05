@@ -11,6 +11,7 @@ const UsersList = () => {
   const [users, setUsers] = useState([])
   const [professions, setProfession] = useState()
   const [selectedProf, setSelectedProf] = useState()
+  const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 8
@@ -25,7 +26,7 @@ const UsersList = () => {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [selectedProf])
+  }, [selectedProf, searchQuery])
 
   const handleDelete = (userId) => {
     setUsers(users.filter((user) => user._id !== userId))
@@ -47,6 +48,7 @@ const UsersList = () => {
   }
 
   const handleProfessionSelect = (item) => {
+    if (searchQuery !== '') setSearchQuery('')
     setSelectedProf(item)
   }
 
@@ -54,16 +56,25 @@ const UsersList = () => {
     setSortBy(item)
   }
 
+  const handleSearchQuery = ({ target }) => {
+    setSelectedProf(undefined)
+    setSearchQuery(target.value)
+  }
+
   if (users.length > 0) {
-    const filteredUsers = selectedProf
+    const filteredUsers = searchQuery
+      ? users.filter((user) =>
+          user.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : selectedProf
       ? users.filter(
           (user) =>
-            JSON.stringify(selectedProf) === JSON.stringify(user.profession)
+            JSON.stringify(user.profession) === JSON.stringify(selectedProf)
         )
       : users
     const count = filteredUsers.length
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order])
-    const userCrop = paginate(sortedUsers, currentPage, pageSize)
+    const usersCrop = paginate(sortedUsers, currentPage, pageSize)
 
     const clearFilter = () => {
       setSelectedProf(undefined)
@@ -83,13 +94,21 @@ const UsersList = () => {
             </button>
           </div>
         )}
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column w-100">
           <SearchStatus length={count} />
-          {users.length > 0 && (
+          <input
+            className="form-control"
+            type="text"
+            name="searchQuery"
+            placeholder="Search..."
+            onChange={handleSearchQuery}
+            value={searchQuery}
+          />
+          {count > 0 && (
             <UsersTable
-              users={userCrop}
-              selectedSort={sortBy}
+              users={usersCrop}
               onSort={handleSort}
+              selectedSort={sortBy}
               onDelete={handleDelete}
               onToggleBookmark={handleToggleBookmark}
             />
