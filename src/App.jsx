@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import NavBar from './components/NavBar'
 import Main from './layouts/Main'
 import Login from './layouts/Login'
 import Users from './layouts/Users'
+import NavBar from './components/ui/NavBar'
 
 const App = () => {
   return (

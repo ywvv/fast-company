@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import TableBody from './tableBody'
+import TableBody from './TableBody'
 import TableHeader from './tableHeader'
 
 const Table = ({ onSort, selectedSort, columns, data, children }) => {
