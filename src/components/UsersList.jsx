@@ -70,9 +70,9 @@ const UsersList = () => {
     }
 
     return (
-      <div className="d-flex">
+      <div className="d-flex container">
         {professions && (
-          <div className="d-flex flex-column p-3">
+          <div className="d-flex flex-column me-3">
             <GroupList
               items={professions}
               onItemSelect={handleProfessionSelect}
@@ -106,7 +106,11 @@ const UsersList = () => {
       </div>
     )
   }
-  return <h1>Loading...</h1>
+  return (
+    <div className="container">
+      <h2>Loading...</h2>
+    </div>
+  )
 }
 
 export default UsersList

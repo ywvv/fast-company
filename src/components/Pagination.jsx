@@ -7,18 +7,20 @@ const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
   const pages = _.range(1, pageCount + 1)
 
   return (
-    <ul className="pagination">
-      {pages.map((page) => (
-        <li
-          className={`page-item ${page === currentPage ? 'active' : ''}`}
-          key={`page-${page}`}
-        >
-          <button className="page-link" onClick={() => onPageChange(page)}>
-            {page}
-          </button>
-        </li>
-      ))}
-    </ul>
+    <nav>
+      <ul className="pagination">
+        {pages.map((page) => (
+          <li
+            className={`page-item ${page === currentPage ? 'active' : ''}`}
+            key={`page-${page}`}
+          >
+            <button className="page-link" onClick={() => onPageChange(page)}>
+              {page}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
   )
 }
 
