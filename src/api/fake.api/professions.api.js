@@ -8,7 +8,7 @@ export const professions = {
 }
 
 const fetchAll = async () =>
-  await new Promise(resolve => {
+  await new Promise((resolve) => {
     // window.setTimeout(() => {
     resolve(professions)
     // }, 2000)

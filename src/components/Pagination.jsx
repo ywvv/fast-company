@@ -8,7 +8,7 @@ const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
 
   return (
     <ul className="pagination">
-      {pages.map(page => (
+      {pages.map((page) => (
         <li
           className={`page-item ${page === currentPage ? 'active' : ''}`}
           key={`page-${page}`}

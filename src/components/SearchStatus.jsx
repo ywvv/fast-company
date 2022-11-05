@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 const SearchStatus = ({ length }) => {
-  const renderPhrase = number => {
+  const renderPhrase = (number) => {
     if (number > 1) {
       return `${length} people online`
     }
