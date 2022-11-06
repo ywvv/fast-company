@@ -10,7 +10,7 @@ const UserPage = () => {
 
   useEffect(() => {
     api.users.getById(userId).then((data) => setUser(data))
-  })
+  }, [])
 
   if (user) {
     return (
@@ -20,8 +20,11 @@ const UserPage = () => {
         <Qualities qualities={user.qualities} />
         <p>completedMeetings: {user.completedMeetings}</p>
         <h2>Rate: {user.rate}</h2>
-        <button className="btn btn-primary" onClick={() => navigate('/users')}>
-          All Users
+        <button
+          className="btn btn-primary"
+          onClick={() => navigate(`/users/${userId}/edit`)}
+        >
+          Edit
         </button>
       </div>
     )

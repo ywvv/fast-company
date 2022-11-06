@@ -11,9 +11,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/login:type" element={<Login />} />
+        <Route path="/login/:type" element={<Login />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:userId" element={<Users />} />
+        <Route path="/users/:userId/:edit" element={<Users />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
