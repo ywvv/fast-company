@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import Qualities from '../../ui/Qualities'
+import { useParams } from 'react-router-dom'
 import api from '../../../api'
+import UserCard from '../../ui/UserCard'
+import QualitiesCard from '../../ui/QualitiesCard'
+import MeetingsCard from '../../ui/MeetingsCard'
+import Comments from '../../ui/Comments'
 
 const UserPage = () => {
   const [user, setUser] = useState()
   const { userId } = useParams()
-  const navigate = useNavigate()
 
   useEffect(() => {
     api.users.getById(userId).then((data) => setUser(data))
@@ -15,17 +17,16 @@ const UserPage = () => {
   if (user) {
     return (
       <div className="container">
-        <h1> {user.name}</h1>
-        <h2>Profession: {user.profession.name}</h2>
-        <Qualities qualities={user.qualities} />
-        <p>completedMeetings: {user.completedMeetings}</p>
-        <h2>Rate: {user.rate}</h2>
-        <button
-          className="btn btn-primary"
-          onClick={() => navigate(`/users/${userId}/edit`)}
-        >
-          Edit
-        </button>
+        <div className="row gutters-sm">
+          <div className="col-md-4 mb-3">
+            <UserCard user={user} />
+            <QualitiesCard data={user.qualities} />
+            <MeetingsCard value={user.completedMeetings} />
+          </div>
+          <div className="col-md-8">
+            <Comments />
+          </div>
+        </div>
       </div>
     )
   }
