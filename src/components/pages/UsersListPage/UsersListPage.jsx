@@ -6,19 +6,16 @@ import SearchStatus from '../../ui/SearchStatus'
 import UsersTable from '../../ui/UsersTable'
 import GroupList from '../../common/GroupList'
 import Pagination from '../../common/Pagination'
+import { useUser } from '../../../hooks/useUsers'
 
 const UsersListPage = () => {
-  const [users, setUsers] = useState([])
   const [professions, setProfession] = useState()
   const [selectedProf, setSelectedProf] = useState()
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 8
-
-  useEffect(() => {
-    api.users.fetchAll().then((data) => setUsers(data))
-  }, [])
+  const { users } = useUser()
 
   useEffect(() => {
     api.professions.fetchAll().then((data) => setProfession(data))
@@ -29,18 +26,19 @@ const UsersListPage = () => {
   }, [selectedProf, searchQuery])
 
   const handleDelete = (userId) => {
-    setUsers(users.filter((user) => user._id !== userId))
+    // setUsers(users.filter((user) => user._id !== userId))
+    console.log(userId)
   }
 
   const handleToggleBookmark = (id) => {
-    setUsers(
-      users.map((user) => {
-        if (user._id === id) {
-          return { ...user, bookmark: !user.bookmark }
-        }
-        return user
-      })
-    )
+    const newArray = users.map((user) => {
+      if (user._id === id) {
+        return { ...user, bookmark: !user.bookmark }
+      }
+      return user
+    })
+    // setUsers(newArray)
+    console.log(newArray)
   }
 
   const handlePageChange = (pageIndex) => {
@@ -125,11 +123,6 @@ const UsersListPage = () => {
       </div>
     )
   }
-  return (
-    <div className="container">
-      <h2>Loading...</h2>
-    </div>
-  )
 }
 
 export default UsersListPage
