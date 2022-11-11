@@ -1,40 +1,34 @@
 import { useEffect, useState } from 'react'
 import TextField from '../common/Form/TextField.jsx'
 import validator from '../../utils/validator.js'
+import CheckboxField from '../common/Form/CheckboxField.jsx'
+import { useAuth } from '../../hooks/useAuth.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
-  const [data, setData] = useState({ email: '', password: '' })
+  const [data, setData] = useState({ email: '', password: '', stayOn: false })
   const [errors, setErrors] = useState({})
+  const [enterError, setEnterError] = useState(null)
+  const { logIn } = useAuth()
+  const navigate = useNavigate()
 
   const handleChange = (target) => {
     setData((prevState) => ({
       ...prevState,
       [target.name]: target.value
     }))
+    setEnterError(null)
   }
 
   const validatorConfig = {
     email: {
       isRequired: {
         message: 'Email is required'
-      },
-      isEmail: {
-        message: 'Email entered incorrectly'
       }
     },
     password: {
       isRequired: {
         message: 'Password is required'
-      },
-      isCapitalSymbol: {
-        message: 'Password must contain at least one capital letter'
-      },
-      isContainDigit: {
-        message: 'Password must contain at least one number'
-      },
-      min: {
-        message: 'Password must contain at least 8 characters',
-        value: 8
       }
     }
   }
@@ -51,11 +45,16 @@ const LoginForm = () => {
 
   const isValid = Object.keys(errors).length === 0
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const isValid = validate()
     if (!isValid) return
-    console.log(data)
+    try {
+      await logIn(data)
+      navigate('/')
+    } catch (error) {
+      setEnterError(error.message)
+    }
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -74,10 +73,14 @@ const LoginForm = () => {
         onChange={handleChange}
         error={errors.password}
       />
+      <CheckboxField value={data.stayOn} onChange={handleChange} name="stayOn">
+        Stay logged in
+      </CheckboxField>
+      {enterError && <p className="text-danger">{enterError}</p>}
       <button
         className="btn btn-primary w-100 mx-auto mb-2"
         type="submit"
-        disabled={!isValid}
+        disabled={!isValid || enterError}
       >
         Submit
       </button>
