@@ -7,6 +7,8 @@ import MultiSelectField from '../common/Form/MultiSelectField.jsx'
 import CheckboxField from '../common/Form/CheckboxField.jsx'
 import { useQualities } from '../../hooks/useQualities.jsx'
 import { useProfessions } from '../../hooks/useProfessions.jsx'
+import { useAuth } from '../../hooks/useAuth.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterForm = () => {
   const [data, setData] = useState({
@@ -17,7 +19,9 @@ const RegisterForm = () => {
     qualities: [],
     license: false
   })
+  const navigate = useNavigate()
 
+  const { signUp } = useAuth()
   const { qualities } = useQualities()
   const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }))
   const { professions } = useProfessions()
@@ -84,7 +88,7 @@ const RegisterForm = () => {
 
   const isValid = Object.keys(errors).length === 0
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const isValid = validate()
     if (!isValid) return null
@@ -93,14 +97,12 @@ const RegisterForm = () => {
       ...data,
       qualities: data.qualities.map((q) => q.value)
     }
-
-    console.log(newData)
-    // const { profession, qualities } = data
-    // console.log({
-    //   ...data,
-    //   profession: getProfessionById(profession),
-    //   qualities: getQualities(qualities)
-    // })
+    try {
+      await signUp(newData)
+      navigate('/')
+    } catch (error) {
+      setErrors(error)
+    }
   }
 
   return (

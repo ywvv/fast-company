@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import userService from '../services/user.sercice.js'
+import userService from '../services/user.service.js'
 import { toast } from 'react-toastify'
 
 const UserContext = createContext()

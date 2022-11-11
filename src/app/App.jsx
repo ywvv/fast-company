@@ -6,24 +6,28 @@ import NavBar from './components/ui/NavBar.jsx'
 import { ToastContainer } from 'react-toastify'
 import { ProfessionProvider } from './hooks/useProfessions.jsx'
 import { QualitiesProvider } from './hooks/useQualities.jsx'
+import { AuthProvider } from './hooks/useAuth.jsx'
 
 const App = () => {
   return (
     <>
-      <NavBar />
-      <QualitiesProvider>
-        <ProfessionProvider>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/login/:type" element={<Login />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/users/:userId" element={<Users />} />
-            <Route path="/users/:userId/:edit" element={<Users />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </ProfessionProvider>
-      </QualitiesProvider>
+      <AuthProvider>
+        <NavBar />
+        <QualitiesProvider>
+          <ProfessionProvider>
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/login/:type" element={<Login />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/users/:userId" element={<Users />} />
+              <Route path="/users/:userId/:edit" element={<Users />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </ProfessionProvider>
+        </QualitiesProvider>
+      </AuthProvider>
+
       <ToastContainer />
     </>
   )
