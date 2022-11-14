@@ -17,11 +17,7 @@ const NavProfile = () => {
             className="rounded-circle"
             height="40"
             alt="avatar"
-            src={`https://avatars.dicebear.com/api/avataaars/${(
-              Math.random() + 1
-            )
-              .toString(36)
-              .substring(7)}.svg`}
+            src={currentUser.image}
           />
         </div>
       </button>
