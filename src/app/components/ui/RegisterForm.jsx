@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 
 const RegisterForm = () => {
   const [data, setData] = useState({
+    name: '',
     email: '',
     password: '',
     profession: '',
@@ -46,6 +47,15 @@ const RegisterForm = () => {
       },
       isEmail: {
         message: 'Email entered incorrectly'
+      }
+    },
+    name: {
+      isRequired: {
+        message: 'Name is required'
+      },
+      min: {
+        message: 'Name must contain at least 3 characters',
+        value: 3
       }
     },
     password: {
@@ -113,6 +123,13 @@ const RegisterForm = () => {
         value={data.email}
         onChange={handleChange}
         error={errors.email}
+      />
+      <TextField
+        label="Name"
+        name="name"
+        value={data.name}
+        onChange={handleChange}
+        error={errors.name}
       />
       <TextField
         label="Password"

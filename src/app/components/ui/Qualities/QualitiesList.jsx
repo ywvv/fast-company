@@ -6,7 +6,9 @@ const QualitiesList = ({ qualities }) => {
   const { isLoading } = useQualities()
 
   if (!isLoading) {
-    return qualities.map((quality) => <Quality key={quality} id={quality} />)
+    if (qualities) {
+      return qualities.map((quality) => <Quality key={quality} id={quality} />)
+    }
   } else {
     return (
       <div className="container">
