@@ -1,19 +1,23 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth.jsx'
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate()
+  const { currentUser } = useAuth()
 
   return (
     <div className="card mb-3">
       <div className="card-body">
-        <button
-          className="btn btn-light btn-sm position-absolute top-0 end-0"
-          onClick={() => navigate(`/users/${user._id}/edit`)}
-          style={{ zIndex: 1 }}
-        >
-          <i className="bi bi-gear-fill fs-5" />
-        </button>
+        {currentUser._id === user._id && (
+          <button
+            className="btn btn-light btn-sm position-absolute top-0 end-0"
+            onClick={() => navigate(`/users/${user._id}/edit`)}
+            style={{ zIndex: 1 }}
+          >
+            <i className="bi bi-gear-fill fs-5" />
+          </button>
+        )}
         <div className="d-flex flex-column align-items-center text-center position-relative">
           <img
             src={user.image}

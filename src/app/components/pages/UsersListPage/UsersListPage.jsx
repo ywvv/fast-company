@@ -7,6 +7,7 @@ import GroupList from '../../common/GroupList.jsx'
 import Pagination from '../../common/Pagination.jsx'
 import { useUser } from '../../../hooks/useUsers.jsx'
 import { useProfessions } from '../../../hooks/useProfessions.jsx'
+import { useAuth } from '../../../hooks/useAuth.jsx'
 
 const UsersListPage = () => {
   const [selectedProf, setSelectedProf] = useState()
@@ -15,6 +16,7 @@ const UsersListPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 8
   const { users } = useUser()
+  const { currentUser } = useAuth()
   const { isLoading: professionsLoading, professions } = useProfessions()
 
   useEffect(() => {
@@ -51,16 +53,22 @@ const UsersListPage = () => {
   }
 
   if (users.length > 0) {
-    const filteredUsers = searchQuery
-      ? users.filter((user) =>
-          user.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : selectedProf
-      ? users.filter(
-          (user) =>
-            JSON.stringify(user.profession) === JSON.stringify(selectedProf)
-        )
-      : users
+    function filterUsers(data) {
+      const filteredUsers = searchQuery
+        ? data.filter(
+            (user) =>
+              user.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1
+          )
+        : selectedProf
+        ? data.filter(
+            (user) =>
+              JSON.stringify(user.profession) === JSON.stringify(selectedProf)
+          )
+        : data
+      return filteredUsers.filter((u) => u._id !== currentUser._id)
+    }
+
+    const filteredUsers = filterUsers(users)
     const count = filteredUsers.length
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order])
     const usersCrop = paginate(sortedUsers, currentPage, pageSize)
