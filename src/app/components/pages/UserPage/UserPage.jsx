@@ -1,18 +1,14 @@
-import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import api from '../../../api/index.js'
 import UserCard from '../../ui/UserCard.jsx'
 import QualitiesCard from '../../ui/QualitiesCard.jsx'
 import MeetingsCard from '../../ui/MeetingsCard.jsx'
 import Comments from '../../ui/Comments.jsx'
+import { useUser } from '../../../hooks/useUsers.jsx'
 
 const UserPage = () => {
-  const [user, setUser] = useState()
   const { userId } = useParams()
-
-  useEffect(() => {
-    api.users.getById(userId).then((data) => setUser(data))
-  }, [])
+  const { getUserById } = useUser()
+  const user = getUserById(userId)
 
   if (user) {
     return (

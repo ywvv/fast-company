@@ -8,11 +8,7 @@ const Profession = ({ id }) => {
   if (!isLoading) {
     return <p>{profession.name}</p>
   } else {
-    return (
-      <div className="container">
-        <h6>Loading...</h6>
-      </div>
-    )
+    return 'Loading...'
   }
 }
 

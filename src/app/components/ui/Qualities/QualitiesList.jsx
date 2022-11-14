@@ -10,11 +10,7 @@ const QualitiesList = ({ qualities }) => {
       return qualities.map((quality) => <Quality key={quality} id={quality} />)
     }
   } else {
-    return (
-      <div className="container">
-        <h6>Loading...</h6>
-      </div>
-    )
+    return 'Loading...'
   }
 }
 

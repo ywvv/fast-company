@@ -139,13 +139,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ signUp, logIn, currentUser, logOut }}>
-      {!isLoading ? (
-        children
-      ) : (
-        <div className="container">
-          <h2>Loading...</h2>
-        </div>
-      )}
+      {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   )
 }
