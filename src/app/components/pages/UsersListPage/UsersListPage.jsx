@@ -1,34 +1,25 @@
 import { useEffect, useState } from 'react'
 import _ from 'lodash'
 import paginate from '../../../utils/paginate.js'
-import api from '../../../api/index.js'
 import SearchStatus from '../../ui/SearchStatus.jsx'
 import UsersTable from '../../ui/UsersTable.jsx'
 import GroupList from '../../common/GroupList.jsx'
 import Pagination from '../../common/Pagination.jsx'
 import { useUser } from '../../../hooks/useUsers.jsx'
+import { useProfessions } from '../../../hooks/useProfessions.jsx'
 
 const UsersListPage = () => {
-  const [professions, setProfession] = useState()
   const [selectedProf, setSelectedProf] = useState()
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 8
   const { users } = useUser()
-
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => setProfession(data))
-  }, [])
+  const { isLoading: professionsLoading, professions } = useProfessions()
 
   useEffect(() => {
     setCurrentPage(1)
   }, [selectedProf, searchQuery])
-
-  const handleDelete = (userId) => {
-    // setUsers(users.filter((user) => user._id !== userId))
-    console.log(userId)
-  }
 
   const handleToggleBookmark = (id) => {
     const newArray = users.map((user) => {
@@ -80,7 +71,7 @@ const UsersListPage = () => {
 
     return (
       <div className="d-flex container">
-        {professions && (
+        {professions && !professionsLoading && (
           <div className="d-flex flex-column me-3">
             <GroupList
               items={professions}
@@ -107,7 +98,6 @@ const UsersListPage = () => {
               users={usersCrop}
               onSort={handleSort}
               selectedSort={sortBy}
-              onDelete={handleDelete}
               onToggleBookmark={handleToggleBookmark}
             />
           )}
