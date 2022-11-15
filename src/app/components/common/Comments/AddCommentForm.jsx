@@ -4,7 +4,7 @@ import validator from '../../../utils/validator.js'
 import TextAreaField from '../Form/TextAreaField.jsx'
 
 const AddCommentForm = ({ onSubmit }) => {
-  const [data, setData] = useState({})
+  const [data, setData] = useState({ content: '' })
   const [errors, setErrors] = useState({})
 
   const handleChange = (target) => {
@@ -29,14 +29,17 @@ const AddCommentForm = ({ onSubmit }) => {
   }
 
   const clearForm = () => {
-    setData({})
+    setData({ content: '' })
     setErrors({})
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const isValid = validate()
-    if (!isValid) return
+    if (!isValid) {
+      setData({ content: '' })
+      return
+    }
     onSubmit(data)
     clearForm()
   }
@@ -46,7 +49,7 @@ const AddCommentForm = ({ onSubmit }) => {
       <h2>New comment</h2>
       <form onSubmit={handleSubmit}>
         <TextAreaField
-          value={data.content || ''}
+          value={data.content}
           onChange={handleChange}
           name="content"
           label="Message"

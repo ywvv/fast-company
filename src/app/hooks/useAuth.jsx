@@ -80,7 +80,6 @@ export const AuthProvider = ({ children }) => {
           .substring(7)}.svg`,
         ...rest
       })
-      console.log(data)
     } catch (error) {
       errorCatcher(error)
       const { code, message } = error.response.data.error
@@ -96,10 +95,18 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const updateUserData = async (data) => {
+    try {
+      const { content } = await userService.update(data)
+      setUser(content)
+    } catch (error) {
+      errorCatcher(error)
+    }
+  }
+
   const createUser = async (data) => {
     try {
       const { content } = await userService.create(data)
-      console.log(content)
       setUser(content)
     } catch (error) {
       errorCatcher(error)
@@ -138,7 +145,9 @@ export const AuthProvider = ({ children }) => {
   }, [error])
 
   return (
-    <AuthContext.Provider value={{ signUp, logIn, currentUser, logOut }}>
+    <AuthContext.Provider
+      value={{ signUp, logIn, currentUser, logOut, updateUserData }}
+    >
       {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   )
