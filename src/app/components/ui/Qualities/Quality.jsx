@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types'
-import { useQualities } from '../../../hooks/useQualities.jsx'
 
-const Quality = ({ id }) => {
-  const { getQuality } = useQualities()
-  const { color, name } = getQuality(id)
-
-  return <span className={`badge m-1 bg-${color}`}>{name}</span>
+const Quality = ({ _id, color, name }) => {
+  return (
+    <span className={`badge m-1 bg-${color}`} key={_id}>
+      {name}
+    </span>
+  )
 }
 
 Quality.propTypes = {
-  id: PropTypes.string.isRequired
+  _id: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired
 }
 
 export default Quality

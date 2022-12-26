@@ -7,8 +7,12 @@ import RadioField from '../../common/Form/RadioField.jsx'
 import MultiSelectField from '../../common/Form/MultiSelectField.jsx'
 import BackHistoryButton from '../../common/BackHistoryButton.jsx'
 import { useAuth } from '../../../hooks/useAuth.jsx'
-import { useQualities } from '../../../hooks/useQualities.jsx'
 import { useProfessions } from '../../../hooks/useProfessions.jsx'
+import { useSelector } from 'react-redux'
+import {
+  getQualities,
+  getQualitiesLoadingStatus
+} from '../../../store/qualities.js'
 
 const EditUserPage = () => {
   const navigate = useNavigate()
@@ -16,9 +20,9 @@ const EditUserPage = () => {
   const [data, setData] = useState()
   const [errors, setErrors] = useState({})
   const { currentUser, updateUserData } = useAuth()
-  const { qualities, isLoading: qualitiesLoading } = useQualities()
+  const qualities = useSelector(getQualities())
+  const qualitiesLoading = useSelector(getQualitiesLoadingStatus())
   const { professions, isLoading: professionsLoading } = useProfessions()
-
   const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }))
   const professionsList = professions.map((p) => ({
     label: p.name,
